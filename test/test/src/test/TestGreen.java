@@ -7,7 +7,7 @@ public class TestGreen extends test.src.test.Test {
     public static void main(String[] args) {
         test.src.test.Test.main(args);
         // Calc Green
-        boolean verbose = true;
+        //boolean verbose = true;
         test(verbose, "test/greenZeroUnix.calc", "0", OptionalInt.of(0));
         test(verbose, "test/greenZeroDos.calc", "0", OptionalInt.of(0));
         test(verbose, "test/greenZeroTab.calc", "0", OptionalInt.of(0));

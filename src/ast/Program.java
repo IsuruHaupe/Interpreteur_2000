@@ -26,15 +26,6 @@ public class Program extends Exp{
         return "Program(" + defs + ", " + body + ")";
     }
 
-/*
-    public static String genMain(String code) {
-        return "#include <stdio.h>\n" +
-                "int main() {\n" +
-                "   return printf(\"%i\\n\", " + code + ");\n" +
-                "}\n";
-    }
-
- */
     @Override
     public String gen(int depth) {
         return "#include <stdio.h>\n" +

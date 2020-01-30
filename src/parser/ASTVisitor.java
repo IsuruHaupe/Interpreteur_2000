@@ -38,11 +38,9 @@ public class ASTVisitor extends CalcBaseVisitor<AST>{
 
     @Override
     public AST visitBinExp(CalcParser.BinExpContext ctx) {
-        //OP operation;
         List<CalcParser.ExpressionContext> expCtxs = ctx.expression();
         Exp exp1 = (Exp) visit(expCtxs.get(0));
         Exp exp2 = (Exp) visit(expCtxs.get(1));
-        //operation = getOperator(ctx.getChild(1).getText());
         return new BinExp(exp1, exp2, OP.parse(ctx.getChild(1).getText()));
     }
 

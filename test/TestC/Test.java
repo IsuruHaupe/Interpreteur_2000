@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import calc.Calc;
 
-/** 
+/**
  * @author  Jacques Noye
  * @version 1.4
  * @since   2020-01-26
@@ -26,15 +26,16 @@ public abstract class Test {
 	public static void report(){
 		System.out.println(success + " successful tests out of " + count);
 	}
-	// assumes the path environment variable has been updated so that bash (and gcc) is in the path	
+	// assumes the path environment variable has been updated so that bash (and gcc) is in the path
 	static final String SHELL = "bash";
 	static final String EXT = ".out"; // EXT = ".exe"
-	static final String CC = "gcc -Werror -Weverything"; // clang on macOS
+	static final String CC = "gcc -pedantic-errors";
+	//static final String CC = "gcc -Werror -Weverything"; // clang on macOS
 	// static final String CC = "gcc -Werror" // gcc on Windows and Linux
 	// static final String CC = "gcc-mp-8 -Werror"; // genuine gcc on macOS (if installed)
 	/**
 	 * Executes a test.
-	 * 
+	 *
 	 * @param verbose	Verbose mode. Assumes compiler also has a verbose mode (option "-v" as
 	 * 					second argument). 
 	 * @param fileName  Name of file to compile (relative to project root).
@@ -59,7 +60,7 @@ public abstract class Test {
 			String root = fileName.replaceFirst("\\.calc\\z", "");
 			String cFileName = root + ".c";
 			File cFile = new File(cFileName);
-			if (cFile.exists()) 
+			if (cFile.exists())
 			    time0 = cFile.lastModified();
 			try {
 			    Calc.compile(new FileInputStream(fileName), fileName);
@@ -72,7 +73,7 @@ public abstract class Test {
                 } else
                     System.err.println("FAILURE of " + root);
 			    return;
-			}			
+			}
 			if (cFile.exists()) // it should
 			    time1 = cFile.lastModified();
 			if (time1 > time0) { // some C code has been produced by the compiler 
@@ -88,9 +89,9 @@ public abstract class Test {
 					System.out.println("SUCCESS of " + root);
 					success++;
 				    } else System.err.println("FAILURE of " + root + " with " + result);
-				} else 
+				} else
 				    System.err.println("FAILURE: C code for " + root + " does not compile");
-			    } else 
+			    } else
 				System.err.println("FAILURE: C code for " + root + " does not compile");
 			} else { // no C code produced
 			    System.err.println("No C code produced for " + fileName);
@@ -105,10 +106,10 @@ public abstract class Test {
 		    e.printStackTrace();
 		}
 	}
-			
+
 	/**
 	 * Compiles input file.
-	 * 
+	 *
 	 * @param cFileName Name of input .c file. 
 	 * @return Name of output executable (.out) file.
 	 * @throws IOException
@@ -125,9 +126,9 @@ public abstract class Test {
 		return outputFileName;
 	}
 
-	/** 
+	/**
 	 * Executes input file and logs result in .txt file.
-	 * 
+	 *
 	 * @param fileName		Input executable (.out) file.	
 	 * @throws IOException
 	 * @throws InterruptedException
@@ -140,9 +141,9 @@ public abstract class Test {
 
 	/**
 	 * Reads result from .txt file. 
-	 * 
+	 *
 	 * Assumes one-line result.
-	 * 
+	 *
 	 * @param txtFileName Input .txt file.
 	 * @return Contents of .txt as a string (first line only).			
 	 * @throws FileNotFoundException
@@ -154,10 +155,10 @@ public abstract class Test {
 		new File("result").delete();
         return result;
 	}
-    
+
 	/**
 	 * For testing purposes.
-	 * 
+	 *
 	 * @param shellCmd
 	 * @throws IOException
 	 * @throws InterruptedException
