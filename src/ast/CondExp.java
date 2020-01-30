@@ -19,16 +19,30 @@ public class CondExp extends Exp {
     }
 
     @Override
-    public int eval(State<Integer> varState,  State<FunDef> stFun) {
-        if (exp1.eval(varState, stFun) != 0) {
-            return exp2.eval(varState, stFun);
+    public int eval() {
+        if (exp1.eval() != 0) {
+            return exp2.eval();
         } else {
-            return exp3.eval(varState, stFun);
+            return exp3.eval();
+        }
+    }
+
+    @Override
+    public Type type() {
+        if (this.exp1.type() == Type.BOOL) {
+            if (this.exp2.type() == this.exp3.type()) {
+                return this.exp2.type();
+            } else {
+                throw new SemanticError();
+            }
+        } else {
+            throw new SemanticError();
         }
     }
 
     @Override
     public String gen(int depth) {
-        return "(" + exp1.gen(0) + "? " + exp2.gen(0) + ": " + exp3.gen(0) + ")";
+        this.type();
+        return this.exp1.gen(0) + '?' + this.exp2.gen(0) + ':' + this.exp3.gen(0);
     }
 }

@@ -1,28 +1,63 @@
 package ast;
 
 import eval.State;
+import java.util.List;
 
 public class VarDef extends AST {
 
-    public String name;
-    public Exp expression;
+    private String name;
+    private Var var;
+    private Exp expression;
 
-    public VarDef(String name, Exp exp) {
-        this.name = name;
+    public VarDef(Var var, Exp exp) {
+        this.name = "=";
+        this.var = var;
         this.expression = exp;
     }
 
-    @Override
-    public String toString() {
-        return "VarDef("+ name + "," + expression + ")";
+    public void eval(State<Exp> stateVar) {
+        if (stateVar.lookup(this.var.toString()) != null) {
+            throw new SyntaxError("Syntax Error");
+        } else {
+            stateVar.bind(this.var.toString(), this.expression);
+        }
     }
 
     @Override
     public String gen(int depth) {
-        return null;
+        if (!exist()) {
+            return this.type().getType() + " " + this.getVariableId().gen(0) + " = " + this.getExp().gen(0) + ";\n";
+        } else {
+            throw new SemanticError();
+        }
     }
 
-    public void eval(State<Integer> varState, State<FunDef> stFun){
-        varState.bind(this.name, this.expression.eval(varState, stFun));
+    @Override
+    public Type type() {
+        return this.expression.type();
+    }
+
+    @Override
+    public String toString() {
+        return "VarDef(" + name + ", " + var + ", " + expression + ")";
+    }
+
+    public Var getVariableId() {
+        return var;
+    }
+
+    public Exp getExp() {
+        return expression;
+    }
+
+    public boolean exist() {
+        List<VarDef> defs = Body.getDefs();
+        int cpt = 0;
+        for (VarDef def : defs) {
+            if (this.var.s.equals(def.getVariableId().s)) {
+                cpt++;
+            }
+        }
+        return cpt >= 2;
     }
 }

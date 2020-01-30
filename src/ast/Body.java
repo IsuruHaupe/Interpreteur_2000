@@ -5,19 +5,12 @@ import eval.State;
 import java.util.List;
 
 public class Body extends AST {
-    List<VarDef> defs;
+    static List<VarDef> defs;
     Exp expression;
 
     public Body(List<VarDef> defs, Exp expression) {
-        this.defs = defs;
+        Body.defs = defs;
         this.expression = expression;
-    }
-
-    public int eval(State<Integer> state, State<FunDef> stFun) {
-        for(VarDef var : defs) {
-            var.eval(state, stFun);
-        }
-        return this.expression.eval(state, stFun);
     }
 
     @Override
@@ -27,6 +20,27 @@ public class Body extends AST {
 
     @Override
     public String gen(int depth) {
-        throw new NotImplemented();
+        StringBuilder code = new StringBuilder();
+        for (VarDef def: defs) {
+            code.append(def.gen(0));
+        }
+        return  (String) (code + expression.gen(0));
+    }
+
+    @Override
+    public Type type() {
+        return this.expression.type();
+    }
+
+    public int eval(State<Exp> state) {
+        for(VarDef var : defs) {
+            var.eval(state);
+        }
+        return this.expression.eval();
+    }
+
+
+    public static List<VarDef> getDefs() {
+        return defs;
     }
 }

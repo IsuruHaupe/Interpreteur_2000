@@ -1,6 +1,6 @@
 package ast;
 
-import eval.State;
+import java.util.List;
 
 public class Var extends Exp{
     String s;
@@ -15,17 +15,31 @@ public class Var extends Exp{
     }
 
     @Override
-    public int eval(State<Integer> varState,  State<FunDef> stFun) {
-        if (varState.lookup(this.s) != null) {
-            Integer value = varState.lookup(this.s);
-            return value;
-        } else {
-            throw new SyntaxError("Unknown variable name " + this.s);
-        }
+    public int eval() {
+        return 0;
+    }
+
+    @Override
+    public Type type() {
+        return Type.INT;
     }
 
     @Override
     public String gen(int depth) {
-        return s;
+        if (exist()) {
+            return this.s;
+        } else {
+            throw new SemanticError();
+        }
+    }
+
+    public boolean exist() {
+        List<VarDef> defs = Body.getDefs();
+        for (VarDef def : defs) {
+            if (this.s.equals(def.getVariableId().s)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,35 +1,42 @@
 grammar Calc;
 
 // syntactic rules
-
-program  : funcDef* body
+body     : varDef* expression EOF
          ;
-funcDef  : '(' 'defun' head body ')'
-         ;
-head     : '(' functionId variableId* ')'
-         ;
-body     : varDef* expression
-         ;
-varDef   : '(' '=' variableId expression ')'
+varDef   : variableId '=' expression
          ;
 expression : LITERAL                                                        #IntLit
            | variableId                                                     #Var
-           | '(' '-' expression tail                                        #MinusExp
-           | '(' OP expression expression ')'                               #BinExp
-           | '(' 'if' expression expression expression ')'                  #CondExp
-           | '(' functionId expression* ')'                                 #FunExp
-           ;
-tail       : ')'
-           | expression ')'
+           | ('true' | 'false')                                             #BoolLit
+           | '(' expression ')'                                             #ParExp
+           | (MINUS | NOT) expression                                       #UnExp
+           | expression  MULTIPLICATIVE expression                          #BinExpTimes
+           | expression (MINUS | PLUS) expression                           #BinExpPlus
+           | expression RELATIONAL expression                               #RelationalExp
+           | expression EQUALITY expression                                 #EqualExp
+           | expression LOGICAL_AND expression                              #AndExp
+           | expression LOGICAL_OR expression                               #OrExp
+           | <assoc = right> expression '?' expression ':' expression       #CondExp
            ;
 variableId : IDENTIFIER
            ;
-functionId : IDENTIFIER
-           ;
 
 // lexical rules
-
-OP       : '+' | '*' | '/' | '==' | '<'
+MINUS    : '-'
+         ;
+NOT      : '!'
+         ;
+PLUS     : '+'
+         ;
+MULTIPLICATIVE : '*' | '/'
+         ;
+RELATIONAL     : '<' | '>' | '<=' | '>='
+         ;
+EQUALITY : '==' | '!='
+         ;
+LOGICAL_AND    : '&&'
+         ;
+LOGICAL_OR : '||'
          ;
 IDENTIFIER : ('a'..'z')('a'..'z' | '0'..'9')*
          ;

@@ -1,8 +1,5 @@
 package ast;
 
-
-import eval.State;
-
 public class BinExp extends Exp{
     Exp exp1;
     Exp exp2;
@@ -20,30 +17,32 @@ public class BinExp extends Exp{
     }
 
     @Override
-    public int eval(State<Integer> varState,  State<FunDef> stFun) {
-        int val1 = exp1.eval(varState, stFun);
-        int val2 = exp2.eval(varState, stFun);
-        switch (operation) {
-            case PLUS:
-                return val1 + val2;
-            case MINUS:
-                return val1 - val2;
-            case TIMES:
-                return val1 * val2;
-            case DIVIDE:
-                return val1 / val2;
-            case EQUAL:
-                return  val1 == val2 ? 1 : 0;
-            case LESS:
-                return val1 < val2 ? 1 : 0;
-            default:
-                throw new SyntaxError("Invalid operator");
+    public int eval() {
+        if (operation.equals(OP.MINUS)) {
+            return this.exp1.eval() - this.exp2.eval();
+        } else if (operation.equals(OP.PLUS)) {
+            return this.exp1.eval() + this.exp2.eval();
+        } else if (operation.equals(OP.DIVIDE)) {
+            return (this.exp1.eval() / this.exp2.eval());
+        } else if (operation.equals(OP.TIMES)) {
+            return this.exp1.eval() * this.exp2.eval();
+        } else {
+            throw new SyntaxError("Invalid operator");
+        }
+    }
+
+    @Override
+    public Type type() {
+        if (this.exp1.type() == Type.INT && this.exp2.type() == Type.INT) {
+            return Type.INT;
+        } else {
+            throw new SemanticError();
         }
     }
 
     @Override
     public String gen(int depth) {
-        return "(" + exp1.gen(0) + " " + OP.gen(operation) + " "
-                + exp2.gen(0) + ")";
+        this.type();
+        return this.exp1.gen(0) + operation.gen() + this.exp2.gen(0);
     }
 }

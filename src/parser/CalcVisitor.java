@@ -11,24 +11,6 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link CalcParser#program}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitProgram(CalcParser.ProgramContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CalcParser#funcDef}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncDef(CalcParser.FuncDefContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CalcParser#head}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHead(CalcParser.HeadContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link CalcParser#body}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -41,33 +23,19 @@ public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVarDef(CalcParser.VarDefContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code IntLit}
+	 * Visit a parse tree produced by the {@code AndExp}
 	 * labeled alternative in {@link CalcParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntLit(CalcParser.IntLitContext ctx);
+	T visitAndExp(CalcParser.AndExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Var}
+	 * Visit a parse tree produced by the {@code ParExp}
 	 * labeled alternative in {@link CalcParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar(CalcParser.VarContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code MinusExp}
-	 * labeled alternative in {@link CalcParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMinusExp(CalcParser.MinusExpContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code BinExp}
-	 * labeled alternative in {@link CalcParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBinExp(CalcParser.BinExpContext ctx);
+	T visitParExp(CalcParser.ParExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code CondExp}
 	 * labeled alternative in {@link CalcParser#expression}.
@@ -76,28 +44,72 @@ public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCondExp(CalcParser.CondExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FunExp}
+	 * Visit a parse tree produced by the {@code UnExp}
 	 * labeled alternative in {@link CalcParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunExp(CalcParser.FunExpContext ctx);
+	T visitUnExp(CalcParser.UnExpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CalcParser#tail}.
+	 * Visit a parse tree produced by the {@code OrExp}
+	 * labeled alternative in {@link CalcParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTail(CalcParser.TailContext ctx);
+	T visitOrExp(CalcParser.OrExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BinExpPlus}
+	 * labeled alternative in {@link CalcParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinExpPlus(CalcParser.BinExpPlusContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Var}
+	 * labeled alternative in {@link CalcParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVar(CalcParser.VarContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code EqualExp}
+	 * labeled alternative in {@link CalcParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualExp(CalcParser.EqualExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BinExpTimes}
+	 * labeled alternative in {@link CalcParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinExpTimes(CalcParser.BinExpTimesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code RelationalExp}
+	 * labeled alternative in {@link CalcParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelationalExp(CalcParser.RelationalExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IntLit}
+	 * labeled alternative in {@link CalcParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntLit(CalcParser.IntLitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolLit}
+	 * labeled alternative in {@link CalcParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolLit(CalcParser.BoolLitContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CalcParser#variableId}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitVariableId(CalcParser.VariableIdContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CalcParser#functionId}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionId(CalcParser.FunctionIdContext ctx);
 }

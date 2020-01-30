@@ -1,11 +1,9 @@
 package ast;
 
-import eval.State;
-
 public class BoolLit extends Exp {
-    final String val;
+    boolean val;
 
-    public BoolLit(String val) {
+    public BoolLit(boolean val) {
         this.val = val;
     }
 
@@ -15,13 +13,17 @@ public class BoolLit extends Exp {
     }
 
     @Override
-    public int eval(State<Integer> varState,  State<FunDef> stateFunc) {
-        return Integer.parseInt(val);
+    public int eval() {
+        return this.val ? 1 : 0;
     }
-
 
     @Override
     public String gen(int depth) {
-        return val;
+        return this.val ? "1" : "0";
+    }
+
+    @Override
+    public Type type() {
+        return Type.BOOL;
     }
 }

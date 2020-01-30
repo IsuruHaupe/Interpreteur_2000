@@ -4,7 +4,6 @@ import ast.AST;
 import ast.Exp;
 import ast.Program;
 import ast.SyntaxError;
-import eval.State;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -58,30 +57,29 @@ public class Calc {
         CalcParser parser = new CalcParser(tokens);
         parser.removeErrorListeners();
         parser.addErrorListener(new ErrorListener());
-        ParseTree tree = parser.program();
-        if (verbose)
-            System.out.println("ANTLR Syntax Tree: " + tree.toStringTree(parser));
-        //TODO : implement error detection
+        ParseTree tree = parser.body();
         if (ErrorFlag.getFlag()) {
             throw new SyntaxError("Erroneous Syntax Tree");
         } else {
+            if (verbose)
+                System.out.println("ANTLR Syntax Tree: " + tree.toStringTree(parser));
             ASTVisitor visitor = new ASTVisitor();
             AST ast = visitor.visit(tree);
             if (verbose)
                 System.out.println("AST: " + ast);
+            ast.type();
             return ast;
         }
     }
 
     public static int interpret(InputStream is) throws IOException {
         AST ast = analyze(is);
-        return ((Exp) ast).eval(new State<>(), new State<>());
+        return ((Exp) ast).eval();
     }
 
     public static void compile(InputStream is, String inputFile) throws IOException {
         AST ast = analyze(is);
-        //String code = Program.genMain(ast.gen(0)); // TODO: update for blue and red tracks
-        String code = ast.gen(0);
+        String code = Program.gen(ast.gen(0));
         if (inputFile != null)
             write(code, inputFile);
         else

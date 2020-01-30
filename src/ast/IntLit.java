@@ -15,8 +15,13 @@ public class IntLit extends Exp {
     }
 
     @Override
-    public int eval(State<Integer> varState,  State<FunDef> stateFunc) {
+    public int eval() {
         return Integer.parseInt(val);
+    }
+
+    @Override
+    public Type type() {
+        return Type.INT;
     }
 
 
