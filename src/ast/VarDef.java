@@ -26,7 +26,9 @@ public class VarDef extends AST {
     @Override
     public String gen(int depth) {
         if (!exist()) {
-            return this.type().getType() + " " + this.getVariableId().gen(0) + " = " + this.getExp().gen(0) + ";\n";
+            return this.type().getType() + " " +
+                    this.getVar().gen(0) + " = " +
+                    this.getExpression().gen(0) + ";\n";
         } else {
             throw new SemanticError();
         }
@@ -42,11 +44,11 @@ public class VarDef extends AST {
         return "VarDef(" + name + ", " + var + ", " + expression + ")";
     }
 
-    public Var getVariableId() {
+    public Var getVar() {
         return var;
     }
 
-    public Exp getExp() {
+    public Exp getExpression() {
         return expression;
     }
 
@@ -54,7 +56,7 @@ public class VarDef extends AST {
         List<VarDef> defs = Body.getDefs();
         int cpt = 0;
         for (VarDef def : defs) {
-            if (this.var.s.equals(def.getVariableId().s)) {
+            if (this.var.s.equals(def.getVar().s)) {
                 cpt++;
             }
         }

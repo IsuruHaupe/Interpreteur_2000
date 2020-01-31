@@ -13,8 +13,9 @@ public class ParExp extends Exp{
         return '(' + this.exp.gen(0) + ')';
     }
 
-    public String toString(){
-        return "ParExp("+this.exp+")";
+    @Override
+    public String toString() {
+        return "ParExp(" + exp + ")";
     }
 
     @Override

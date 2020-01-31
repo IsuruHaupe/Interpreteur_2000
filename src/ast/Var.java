@@ -36,7 +36,7 @@ public class Var extends Exp{
     public boolean exist() {
         List<VarDef> defs = Body.getDefs();
         for (VarDef def : defs) {
-            if (this.s.equals(def.getVariableId().s)) {
+            if (this.s.equals(def.getVar().s)) {
                 return true;
             }
         }

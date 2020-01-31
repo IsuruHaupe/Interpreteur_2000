@@ -1,7 +1,5 @@
 package ast;
 
-import eval.State;
-
 public class IntLit extends Exp {
     final String val;
 

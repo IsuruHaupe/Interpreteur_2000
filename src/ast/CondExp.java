@@ -20,11 +20,7 @@ public class CondExp extends Exp {
 
     @Override
     public int eval() {
-        if (exp1.eval() != 0) {
-            return exp2.eval();
-        } else {
-            return exp3.eval();
-        }
+        return exp1.eval() != 0 ? exp2.eval() : exp3.eval();
     }
 
     @Override

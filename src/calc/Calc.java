@@ -61,12 +61,14 @@ public class Calc {
         if (ErrorFlag.getFlag()) {
             throw new SyntaxError("Erroneous Syntax Tree");
         } else {
-            if (verbose)
+            if (verbose) {
                 System.out.println("ANTLR Syntax Tree: " + tree.toStringTree(parser));
+            }
             ASTVisitor visitor = new ASTVisitor();
             AST ast = visitor.visit(tree);
-            if (verbose)
+            if (verbose) {
                 System.out.println("AST: " + ast);
+            }
             ast.type();
             return ast;
         }

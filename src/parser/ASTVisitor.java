@@ -1,7 +1,6 @@
 package parser;
 
 import ast.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +12,7 @@ public class ASTVisitor extends CalcBaseVisitor<AST>{
 
     @Override
     public AST visitBoolLit(CalcParser.BoolLitContext ctx) {
-        boolean bool;
-        if (ctx.getText().equals("true")) {
-            bool = true;
-        } else {
-            bool = false;
-        }
-        return new BoolLit(bool);
+        return new BoolLit(ctx.getText().equals("true"));
     }
 
     @Override
@@ -36,21 +29,14 @@ public class ASTVisitor extends CalcBaseVisitor<AST>{
         return new CondExp(exp1, exp2, exp3);
     }
 
-
-
     @Override
     public AST visitUnExp(CalcParser.UnExpContext ctx) {
-        OP operation;
-        if (ctx.MINUS() != null) {
-            operation = OP.parse(String.valueOf(ctx.MINUS()));
-        } else {
-            operation = OP.parse(String.valueOf(ctx.NOT()));
-        }
+        OP operation = (ctx.MINUS() != null) ?
+                OP.parse(String.valueOf(ctx.MINUS())) :
+                OP.parse(String.valueOf(ctx.NOT()));
         Exp exp1 = (Exp) visit(ctx.expression());
         return new UnExp(operation, exp1);
     }
-
-
 
     @Override public AST visitBody(CalcParser.BodyContext ctx) {
         List<CalcParser.VarDefContext> varDefListCtx = ctx.varDef();
@@ -64,15 +50,15 @@ public class ASTVisitor extends CalcBaseVisitor<AST>{
 
     @Override
     public AST visitVarDef(CalcParser.VarDefContext ctx) {
-        Var variableId = (Var) visit(ctx.variableId());
+        Var varId = (Var) visit(ctx.variableId());
         Exp exp = (Exp) visit(ctx.expression());
-        return new VarDef(variableId, exp);
+        return new VarDef(varId, exp);
     }
 
     @Override
     public AST visitParExp(CalcParser.ParExpContext ctx) {
-        Exp expression = (Exp) visit(ctx.expression());
-        return new ParExp(expression);
+        Exp exp = (Exp) visit(ctx.expression());
+        return new ParExp(exp);
     }
 
 
@@ -91,14 +77,11 @@ public class ASTVisitor extends CalcBaseVisitor<AST>{
     @Override
     public AST visitBinExpPlus(CalcParser.BinExpPlusContext ctx) {
         List<CalcParser.ExpressionContext> expCtxs = ctx.expression();
-        OP operation;
-        if (ctx.PLUS() != null) {
-            operation = OP.parse(String.valueOf(ctx.PLUS()));
-        } else {
-            operation = OP.parse(String.valueOf(ctx.MINUS()));
-        }
         Exp exp1 = (Exp) visit(expCtxs.get(0));
         Exp exp2 = (Exp) visit(expCtxs.get(1));
+        OP operation = (ctx.PLUS() != null) ?
+                OP.parse(String.valueOf(ctx.PLUS())) :
+                OP.parse(String.valueOf(ctx.MINUS()));
         return new BinExp(exp1, exp2, operation);
     }
 
