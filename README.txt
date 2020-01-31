@@ -12,9 +12,12 @@ Avancement : (à partir des nouveaux tests sur moodle)
 
 - La piste verte est fonctionnelle
 - Utilisation du flag gcc -pedantic-errors pour les tests car gcc -Werror -Weverything est trop restrictif
-- Implémentation de la gestion des erreurs avec la création des classes : 
-    - ErrorListener
-    - ErrorFlag
+- Implémentation : 
+	- de la gestion des erreurs avec la création des classes : 
+    		- ErrorListener
+    		- ErrorFlag
+	- l'utilisation de booléens
+	-  de la gestion des opérateurs en mode infixe
 - Temps passé sur le projet : ~20h
 - Feedback : 
     - Projet enrichissant qui apprend beaucoup mais on passe beaucoup de temps à se creuser la tête
